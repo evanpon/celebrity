@@ -1,9 +1,7 @@
 import 'package:celebrity/add_celebrity.dart';
 import 'package:celebrity/play_game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class GameDetailsRoute extends StatelessWidget {
   final QueryDocumentSnapshot _game;
@@ -30,7 +28,8 @@ class GameDetailsRoute extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PlayGameRoute(game: document)));
+                          builder: (context) =>
+                              PlayGameRoute(game: document, time: 10)));
                 },
                 child: Text("Play game!"));
             return Column(

@@ -75,10 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
           stream: FirebaseFirestore.instance.collection('games').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return const Text('Loading');
-            print("snapshot: $snapshot");
             var data = snapshot.data;
 
-            print("data: $data");
             var docs = data.documents.length;
 
             return ListView.builder(
