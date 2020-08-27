@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'turn_over.dart';
 import 'dart:math';
 
 class PlayGameRoute extends StatefulWidget {
@@ -15,7 +16,9 @@ class PlayGameRoute extends StatefulWidget {
 
 class PlayGameState extends State<PlayGameRoute> {
   String _celebrity = 'Loading...';
-  int _timeLeft = 30;
+  int _timeLeft = 5;
+  int _correct = 0;
+  int _incorrect = 0;
   List celebrities;
 
   @override
@@ -48,10 +51,12 @@ class PlayGameState extends State<PlayGameRoute> {
   }
 
   void gotIt() {
+    _correct += 1;
     _getNextCelebrity();
   }
 
   void missedIt() {
+    _incorrect += 1;
     _getNextCelebrity();
   }
 
@@ -67,7 +72,19 @@ class PlayGameState extends State<PlayGameRoute> {
     });
     if (_timeLeft > 0) {
       startTimer();
+    } else {
+      endTurn();
     }
+  }
+
+  void endTurn() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TurnOverRoute(
+                  correct: _correct,
+                  incorrect: _incorrect,
+                )));
   }
 
   Widget build(BuildContext context) {

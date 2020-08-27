@@ -67,20 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('home page'),
-    //   ),
-    //   body: Center(
-    //     child: RaisedButton(
-    //       onPressed: () {
-    //         Navigator.push(context,
-    //             MaterialPageRoute(builder: (context) => GameDetailsRoute()));
-    //       },
-    //       child: Text('do stuff'),
-    //     ),
-    //   ),
-    // );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
