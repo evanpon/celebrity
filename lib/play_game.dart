@@ -74,15 +74,21 @@ class PlayGameState extends State<PlayGameRoute> {
   }
 
   void gotIt() {
-    _correct += 1;
-    _correctCelebs.add(_celebrity);
-    _getNextCelebrity();
+    // Ignore any preemptive clicking of the button
+    if (_celebrity != null) {
+      _correct += 1;
+      _correctCelebs.add(_celebrity);
+      _getNextCelebrity();
+    }
   }
 
   void missedIt() {
-    _incorrect += 1;
-    _incorrectCelebs.add(_celebrity);
-    _getNextCelebrity();
+    // Ignore any preemptive clicking of the button
+    if (_celebrity != null) {
+      _incorrect += 1;
+      _incorrectCelebs.add(_celebrity);
+      _getNextCelebrity();
+    }
   }
 
   void startTimer() {
