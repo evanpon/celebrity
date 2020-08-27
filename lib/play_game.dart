@@ -15,6 +15,7 @@ class PlayGameRoute extends StatefulWidget {
 
 class PlayGameState extends State<PlayGameRoute> {
   String _celebrity = 'Loading...';
+  int _timeLeft = 30;
   List celebrities;
 
   @override
@@ -30,6 +31,7 @@ class PlayGameState extends State<PlayGameRoute> {
           data.docs.map((querySnapshot) => querySnapshot.get("name")).toList();
       _getNextCelebrity();
     });
+    startTimer();
   }
 
   void _getNextCelebrity() {
@@ -51,6 +53,21 @@ class PlayGameState extends State<PlayGameRoute> {
 
   void missedIt() {
     _getNextCelebrity();
+  }
+
+  void startTimer() {
+    Future.delayed(Duration(seconds: 1), () {
+      handleTimeout();
+    });
+  }
+
+  void handleTimeout() {
+    setState(() {
+      _timeLeft -= 1;
+    });
+    if (_timeLeft > 0) {
+      startTimer();
+    }
   }
 
   Widget build(BuildContext context) {
@@ -75,7 +92,8 @@ class PlayGameState extends State<PlayGameRoute> {
       appBar: AppBar(
         title: Text("Play game"),
       ),
-      body: Column(children: [Text(_celebrity), row]),
+      body:
+          Column(children: [Text(_timeLeft.toString()), Text(_celebrity), row]),
     );
   }
 }
