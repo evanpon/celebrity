@@ -12,7 +12,9 @@ class AddCelebrityRoute extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
     }
-    _game.reference.collection('cards').add({"name": celebrityName});
+    _game.reference
+        .collection('cards')
+        .add({"name": celebrityName, "round": 0});
     _game.reference.update({"card_count": FieldValue.increment(1)});
   }
 

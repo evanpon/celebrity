@@ -28,7 +28,10 @@ class PlayGameState extends State<PlayGameRoute> {
   }
 
   Future<void> loadCelebrities() async {
-    final data = await widget.game.reference.collection('cards').get();
+    final data = await widget.game.reference
+        .collection('cards')
+        .where("round", isLessThan: widget.game.get("round"))
+        .get();
     setState(() {
       celebrities =
           data.docs.map((querySnapshot) => querySnapshot.get("name")).toList();
