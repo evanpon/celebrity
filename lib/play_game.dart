@@ -4,12 +4,11 @@ import 'turn_over.dart';
 import 'start_round.dart';
 import 'dart:math';
 import 'celebrity.dart';
+import 'game_state.dart';
 
 class PlayGameRoute extends StatefulWidget {
-  final DocumentReference gameReference;
-  final int time;
-  const PlayGameRoute({Key key, this.gameReference, this.time})
-      : super(key: key);
+  final GameState state;
+  const PlayGameRoute({Key key, this.state}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,8 +19,8 @@ class PlayGameRoute extends StatefulWidget {
 class PlayGameState extends State<PlayGameRoute> {
   Celebrity _celebrity;
   int _timeLeft;
-  int _correct = 0;
-  int _incorrect = 0;
+  int _correct;
+  int _incorrect;
   List<Celebrity> _celebrities;
   List<Celebrity> _correctCelebs = [];
   List<Celebrity> _incorrectCelebs = [];
@@ -29,14 +28,17 @@ class PlayGameState extends State<PlayGameRoute> {
 
   @override
   void initState() {
-    _timeLeft = widget.time;
+    GameState state = widget.state;
+    _timeLeft = state.time;
+    _correct = state.correct;
+    _incorrect = state.incorrect;
     loadCelebrities();
     super.initState();
   }
 
   Future<void> loadCelebrities() async {
-    game = await widget.gameReference.get();
-    final data = await widget.gameReference
+    game = await widget.state.game.get();
+    final data = await widget.state.game
         .collection('cards')
         .where("round", isLessThan: game.get("round"))
         .get();
@@ -122,14 +124,14 @@ class PlayGameState extends State<PlayGameRoute> {
     int nextRound = game.get("round") + 1;
     updateCorrectCelebs();
     game.reference.update({"round": nextRound});
-
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => StartRoundRoute(
-                gameReference: game.reference,
-                time: _timeLeft,
-                round: nextRound)));
+    GameState state = GameState(
+        round: nextRound,
+        time: _timeLeft,
+        game: game.reference,
+        correct: _correct,
+        incorrect: _incorrect);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => StartRoundRoute(state: state)));
   }
 
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:celebrity/add_celebrity.dart';
 import 'package:celebrity/play_game.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'game_state.dart';
 
 class GameDetailsRoute extends StatelessWidget {
   final QueryDocumentSnapshot _game;
@@ -23,13 +24,13 @@ class GameDetailsRoute extends StatelessWidget {
           if (document != null) {
             int card_count = document.get('card_count');
             var text = Text("Current card count: $card_count");
+            GameState state = GameState(time: 10, game: document.reference);
             var button = RaisedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PlayGameRoute(
-                              gameReference: document.reference, time: 10)));
+                          builder: (context) => PlayGameRoute(state: state)));
                 },
                 child: Text("Play game!"));
             return Column(
