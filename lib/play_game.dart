@@ -6,9 +6,10 @@ import 'dart:math';
 import 'celebrity.dart';
 
 class PlayGameRoute extends StatefulWidget {
-  final QueryDocumentSnapshot game;
+  final DocumentReference gameReference;
   final int time;
-  const PlayGameRoute({Key key, this.game, this.time}) : super(key: key);
+  const PlayGameRoute({Key key, this.gameReference, this.time})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,6 +25,7 @@ class PlayGameState extends State<PlayGameRoute> {
   List<Celebrity> _celebrities;
   List<Celebrity> _correctCelebs = [];
   List<Celebrity> _incorrectCelebs = [];
+  DocumentSnapshot game;
 
   @override
   void initState() {
@@ -33,9 +35,10 @@ class PlayGameState extends State<PlayGameRoute> {
   }
 
   Future<void> loadCelebrities() async {
-    final data = await widget.game.reference
+    game = await widget.gameReference.get();
+    final data = await widget.gameReference
         .collection('cards')
-        .where("round", isLessThan: widget.game.get("round"))
+        .where("round", isLessThan: game.get("round"))
         .get();
     setState(() {
       _celebrities = data.docs
@@ -105,19 +108,28 @@ class PlayGameState extends State<PlayGameRoute> {
                   correct: _correct,
                   incorrect: _incorrect,
                 )));
+    updateCorrectCelebs();
+  }
+
+  // Mark all the celebs that are correct so they are ready for the next round.
+  void updateCorrectCelebs() {
     _correctCelebs.forEach((celebrity) {
       celebrity.reference.update({"round": celebrity.round + 1});
     });
   }
 
   void endRound() {
-    int nextRound = widget.game.get("round") + 1;
-    widget.game.reference.update({"round": nextRound});
+    int nextRound = game.get("round") + 1;
+    updateCorrectCelebs();
+    game.reference.update({"round": nextRound});
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => StartRoundRoute(
-                game: widget.game, time: _timeLeft, round: nextRound)));
+                gameReference: game.reference,
+                time: _timeLeft,
+                round: nextRound)));
   }
 
   Widget build(BuildContext context) {

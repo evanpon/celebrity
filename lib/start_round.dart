@@ -5,15 +5,16 @@ import 'play_game.dart';
 class StartRoundRoute extends StatelessWidget {
   final int time;
   final int round;
-  final QueryDocumentSnapshot game;
-  StartRoundRoute({Key key, this.game, this.time, this.round})
+  final DocumentReference gameReference;
+  StartRoundRoute({Key key, this.gameReference, this.time, this.round})
       : super(key: key);
 
   void play(BuildContext context) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => PlayGameRoute(game: game, time: time)));
+            builder: (context) =>
+                PlayGameRoute(gameReference: gameReference, time: time)));
   }
 
   @override

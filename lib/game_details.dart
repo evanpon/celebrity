@@ -28,8 +28,8 @@ class GameDetailsRoute extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              PlayGameRoute(game: document, time: 10)));
+                          builder: (context) => PlayGameRoute(
+                              gameReference: document.reference, time: 10)));
                 },
                 child: Text("Play game!"));
             return Column(
