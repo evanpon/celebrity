@@ -53,6 +53,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Widget gameWidget(QueryDocumentSnapshot snapshot) {
+    return ListTile(
+      title: Text(snapshot.get('name')),
+      subtitle: Text(
+          "${snapshot.get('card_count')} celebrities, round ${snapshot.get('round')}"),
+      trailing: Icon(Icons.keyboard_arrow_right),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameDetailsRoute(snapshot)));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,23 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return ListView.builder(
                 itemExtent: 80,
                 itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) => ListTile(
-                        title: Row(
-                      children: [
-                        Expanded(
-                            child: RaisedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              GameDetailsRoute(snapshot
-                                                  .data.documents[index])));
-                                },
-                                child: Text(snapshot.data.documents[index]
-                                    .data()['name'])))
-                      ],
-                    )));
+                itemBuilder: (context, index) =>
+                    gameWidget(snapshot.data.documents[index]));
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
