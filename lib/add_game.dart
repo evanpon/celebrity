@@ -38,7 +38,7 @@ class AddGameRoute extends StatelessWidget {
     Padding padding = Padding(padding: EdgeInsets.all(8), child: form);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add celebrity'),
+          title: Text('Create a game'),
           actions: <Widget>[saveButton],
         ),
         body: padding);

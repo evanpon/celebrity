@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => AddGameRoute()))
         },
-        tooltip: 'Increment',
+        tooltip: 'Create a new game',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
