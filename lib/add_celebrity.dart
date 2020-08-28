@@ -25,6 +25,10 @@ class AddCelebrityRoute extends StatelessWidget {
       onPressed: () {
         _submitForm();
         Navigator.of(context).pop();
+        // Scaffold.of(context)
+        //     .showSnackBar(SnackBar(content: Text("Celebrity saved")));
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => AddCelebrityRoute(_game)));
       },
     );
     TextFormField textField = TextFormField(
