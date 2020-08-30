@@ -140,29 +140,45 @@ class PlayGameState extends State<PlayGameRoute> {
 
   Widget build(BuildContext context) {
     final successButton = RaisedButton(
-      onPressed: gotIt,
-      child: Text("Success"),
-    );
+        onPressed: gotIt,
+        color: Colors.green,
+        textColor: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Text("Success"),
+        ));
     final failureButton = RaisedButton(
-      onPressed: missedIt,
-      child: Text("Failure"),
-    );
-    final row = Row(
-      children: [
-        successButton,
-        Padding(
-          padding: EdgeInsets.all(16),
-        ),
-        failureButton
-      ],
-    );
+        onPressed: missedIt,
+        color: Colors.red,
+        textColor: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Text("Failure"),
+        ));
+    var buttonsRow = Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: Row(
+          children: [
+            successButton,
+            Spacer(),
+            failureButton,
+          ],
+        ));
     String celebrityName = _celebrity == null ? "Loading..." : _celebrity.name;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Play game"),
-      ),
-      body: Column(
-          children: [Text(_timeLeft.toString()), Text(celebrityName), row]),
-    );
+        appBar: AppBar(
+          title: Text(_timeLeft.toString()),
+        ),
+        body: Center(
+            child: FractionallySizedBox(
+          widthFactor: 0.8,
+          child: Column(children: [
+            Spacer(flex: 1),
+            Text(celebrityName, style: TextStyle(fontSize: 42)),
+            Spacer(flex: 2),
+            buttonsRow
+          ]),
+        )));
   }
 }
