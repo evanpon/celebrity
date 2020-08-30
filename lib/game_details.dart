@@ -46,6 +46,17 @@ class GameDetailsRoute extends StatelessWidget {
     ]);
   }
 
+  Scaffold simpleScreen(String text) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+          child: Text(
+        text,
+        style: TextStyle(fontSize: 32),
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -55,12 +66,12 @@ class GameDetailsRoute extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Text("Loading");
+            return simpleScreen("Loading...");
           }
           var document = snapshot.data.documents.first;
 
           if (!document.exists) {
-            return Text("Error");
+            return simpleScreen("Error");
           }
           Text cardCount = Text(document.get('card_count').toString());
           // cardCount = Text("50");
