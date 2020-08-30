@@ -8,7 +8,46 @@ class GameDetailsRoute extends StatelessWidget {
   final QueryDocumentSnapshot _game;
   GameDetailsRoute(QueryDocumentSnapshot game) : _game = game;
 
-  Widget gameDetails(BuildContext context) {
+  // void _showPopup(BuildContext context) {
+  //   Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => AddCelebrityRoute()));
+  // }
+  FloatingActionButton playButton(BuildContext context, GameState state) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PlayGameRoute(state: state)));
+      },
+      tooltip: "Play Game",
+      child: Icon(Icons.play_arrow),
+      heroTag: null,
+    );
+  }
+
+  FloatingActionButton addButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => AddCelebrityRoute(_game)));
+      },
+      tooltip: "Add celebrity",
+      child: Icon(Icons.add),
+      heroTag: null,
+    );
+  }
+
+  Widget floatingActionButtons(BuildContext context, GameState state) {
+    return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+      addButton(context),
+      SizedBox(height: 10),
+      playButton(context, state),
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return new StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('games')
@@ -16,52 +55,42 @@ class GameDetailsRoute extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return new Text("Loading");
+            return Text("Loading");
           }
           var document = snapshot.data.documents.first;
-          // document.reference.collection('cards')
 
-          if (document != null) {
-            int card_count = document.get('card_count');
-            var text = Text("Current card count: $card_count");
-            GameState state = GameState(time: 10, game: document.reference);
-            var button = RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PlayGameRoute(state: state)));
-                },
-                child: Text("Play game!"));
-            return Column(
-              children: [text, button],
-            );
-          } else {
-            return new Text("Error");
+          if (!document.exists) {
+            return Text("Error");
           }
+          Text cardCount = Text(document.get('card_count').toString());
+          // cardCount = Text("50");
+          var subtitle = Text("Celebrities");
+          GameState state = GameState(time: 10, game: document.reference);
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(document.get('name')),
+            ),
+            body: Center(
+                child: Column(children: [
+              Expanded(
+                  child: FractionallySizedBox(
+                      widthFactor: 0.8,
+                      child: FittedBox(fit: BoxFit.contain, child: cardCount)),
+                  flex: 2),
+              Expanded(
+                  child: FractionallySizedBox(
+                      widthFactor: 0.8,
+                      child: FittedBox(fit: BoxFit.fitWidth, child: subtitle)),
+                  flex: 1),
+              Expanded(
+                  child: SizedBox(
+                    height: 10,
+                  ),
+                  flex: 1),
+            ])),
+            floatingActionButton: floatingActionButtons(context, state),
+          );
         });
-  }
-
-  // void _showPopup(BuildContext context) {
-  //   Navigator.of(context)
-  //       .push(MaterialPageRoute(builder: (context) => AddCelebrityRoute()));
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_game.get('name')),
-      ),
-      body: gameDetails(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddCelebrityRoute(_game)));
-        },
-        tooltip: "Add celebrity",
-        child: Icon(Icons.add),
-      ),
-    );
   }
 }
