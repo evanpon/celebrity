@@ -19,8 +19,8 @@ class PlayGameRoute extends StatefulWidget {
 class PlayGameState extends State<PlayGameRoute> {
   Celebrity _celebrity;
   int _timeLeft;
-  int _correct;
-  int _incorrect;
+  int _correct = 0;
+  int _incorrect = 0;
   List<Celebrity> _celebrities;
   List<Celebrity> _correctCelebs = [];
   List<Celebrity> _incorrectCelebs = [];
@@ -30,8 +30,6 @@ class PlayGameState extends State<PlayGameRoute> {
   void initState() {
     GameState state = widget.state;
     _timeLeft = state.time;
-    _correct = state.correct;
-    _incorrect = state.incorrect;
     loadCelebrities();
     super.initState();
   }

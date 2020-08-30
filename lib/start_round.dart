@@ -14,15 +14,21 @@ class StartRoundRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> columnChildren = [
+      Text("You have ${state.time} seconds left for the next round."),
+      Text(
+          "Your score for this round: ${state.correct} correct, ${state.incorrect} incorrect."),
+      Text("Your score will now reset."),
+      RaisedButton(
+          onPressed: () => {play(context)}, child: Text("Start next round")),
+    ];
+
+    Column column;
     return Scaffold(
       appBar: AppBar(
         title: Text("Beginning of Round ${state.round}"),
       ),
-      body: Column(children: [
-        Text("You have ${state.time} seconds left for the next round."),
-        RaisedButton(
-            onPressed: () => {play(context)}, child: Text("Start next round")),
-      ]),
+      body: Column(children: columnChildren),
     );
   }
 }
