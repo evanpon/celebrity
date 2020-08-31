@@ -3,6 +3,7 @@ import 'package:celebrity/play_game.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'game_state.dart';
+import 'gridbox.dart';
 
 class GameDetailsRoute extends StatelessWidget {
   final QueryDocumentSnapshot _game;
@@ -57,16 +58,6 @@ class GameDetailsRoute extends StatelessWidget {
     );
   }
 
-  Container gridBox(String primary, String secondary) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(children: [
-        Expanded(child: FittedBox(fit: BoxFit.contain, child: Text(primary))),
-        Text(secondary),
-      ]),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -90,8 +81,9 @@ class GameDetailsRoute extends StatelessWidget {
               title: Text(document.get('name')),
             ),
             body: GridView.count(crossAxisCount: 2, children: [
-              gridBox(document.get('card_count').toString(), "Celebrities"),
-              gridBox(document.get("round").toString(), "Round"),
+              GridBox.informationBox(
+                  document.get('card_count').toString(), "Celebrities"),
+              GridBox.informationBox(document.get("round").toString(), "Round"),
             ]),
             floatingActionButton: floatingActionButtons(context, state),
           );

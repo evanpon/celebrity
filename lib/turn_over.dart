@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
+import 'gridbox.dart';
 
 class TurnOverRoute extends StatelessWidget {
   final int correct;
   final int incorrect;
   TurnOverRoute({Key key, this.correct, this.incorrect}) : super(key: key);
-
-  Container gridBox(String primary, String secondary) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(children: [
-        Expanded(child: FittedBox(fit: BoxFit.contain, child: Text(primary))),
-        Text(secondary),
-      ]),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +15,8 @@ class TurnOverRoute extends StatelessWidget {
         body: GridView.count(
           crossAxisCount: 2,
           children: [
-            gridBox(correct.toString(), "Correct"),
-            gridBox(incorrect.toString(), "Incorrect")
+            GridBox.informationBox(correct.toString(), "Correct"),
+            GridBox.informationBox(incorrect.toString(), "Incorrect")
           ],
         ));
   }
