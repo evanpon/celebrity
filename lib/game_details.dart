@@ -76,7 +76,7 @@ class GameDetailsRoute extends StatelessWidget {
           Text cardCount = Text(document.get('card_count').toString());
           // cardCount = Text("50");
           var subtitle = Text("Celebrities");
-          GameState state = GameState(time: 10, game: document.reference);
+          GameState state = GameState(time: 3, game: document.reference);
 
           return Scaffold(
             appBar: AppBar(

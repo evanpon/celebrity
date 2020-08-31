@@ -23,7 +23,6 @@ class StartRoundRoute extends StatelessWidget {
           onPressed: () => {play(context)}, child: Text("Start next round")),
     ];
 
-    Column column;
     return Scaffold(
       appBar: AppBar(
         title: Text("Beginning of Round ${state.round}"),

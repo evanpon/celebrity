@@ -9,9 +9,31 @@ class TurnOverRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("End Of Turn"),
+          title: Text("End Of Your Turn"),
         ),
-        body: Text(
-            "You got $correct celebrities correct, and $incorrect wrong."));
+        body: GridView.count(
+          crossAxisCount: 2,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(children: [
+                Expanded(
+                    child: FittedBox(
+                        fit: BoxFit.contain, child: Text(correct.toString()))),
+                Text("Correct"),
+              ]),
+            ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(children: [
+                Expanded(
+                    child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(incorrect.toString()))),
+                Text("Incorrect"),
+              ]),
+            ),
+          ],
+        ));
   }
 }
