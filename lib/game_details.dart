@@ -75,7 +75,21 @@ class GameDetailsRoute extends StatelessWidget {
             return simpleScreen("Error");
           }
           GameState state = GameState(time: 3, game: document.reference);
-
+          Column column = Column(
+            children: [
+              Ink(
+                  color: Colors.white,
+                  child: IconButton(
+                    icon: Icon(Icons.keyboard_arrow_up),
+                    iconSize: 64,
+                    onPressed: () => {},
+                  )),
+              IconButton(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  iconSize: 64,
+                  onPressed: () => {}),
+            ],
+          );
           return Scaffold(
             appBar: AppBar(
               title: Text(document.get('name')),
@@ -84,6 +98,8 @@ class GameDetailsRoute extends StatelessWidget {
               GridBox.informationBox(
                   document.get('card_count').toString(), "Celebrities"),
               GridBox.informationBox(document.get("round").toString(), "Round"),
+              GridBox.informationBox(state.time.toString(), "Seconds per turn"),
+              GridBox.widgetBox(column, "Adjust time"),
             ]),
             floatingActionButton: floatingActionButtons(context, state),
           );
