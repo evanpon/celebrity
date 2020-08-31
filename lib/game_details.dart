@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'game_state.dart';
 import 'gridbox.dart';
+import 'main.dart';
 
 class GameDetailsRoute extends StatefulWidget {
   final QueryDocumentSnapshot game;
@@ -13,8 +14,28 @@ class GameDetailsRoute extends StatefulWidget {
   _GameDetailsRouteState createState() => _GameDetailsRouteState();
 }
 
-class _GameDetailsRouteState extends State<GameDetailsRoute> {
+class _GameDetailsRouteState extends State<GameDetailsRoute> with RouteAware {
   GameState gameState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  void didPop() {
+    widget.game.reference.update({"time": gameState.time});
+  }
+
+  void didPushNext() {
+    widget.game.reference.update({"time": gameState.time});
+  }
 
   @override
   void initState() {

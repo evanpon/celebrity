@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'game_details.dart';
 import 'add_game.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() {
   runApp(MyApp());
 }
@@ -27,6 +29,7 @@ class MyApp extends StatelessWidget {
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
               home: MyHomePage(title: 'Celebrity'),
+              navigatorObservers: [routeObserver],
             );
           }
           return Text("Loading", textDirection: TextDirection.ltr);
