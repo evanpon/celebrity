@@ -5,21 +5,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'game_state.dart';
 import 'gridbox.dart';
 
-class GameDetailsRoute extends StatelessWidget {
-  final QueryDocumentSnapshot _game;
-  GameDetailsRoute(QueryDocumentSnapshot game) : _game = game;
+class GameDetailsRoute extends StatefulWidget {
+  final QueryDocumentSnapshot game;
+  const GameDetailsRoute({Key key, this.game}) : super(key: key);
+
+  @override
+  _GameDetailsRouteState createState() => _GameDetailsRouteState();
+}
+
+class _GameDetailsRouteState extends State<GameDetailsRoute> {
+  GameState gameState;
+
+  @override
+  void initState() {
+    gameState =
+        GameState(time: widget.game.get("time"), game: widget.game.reference);
+    super.initState();
+  }
 
   // void _showPopup(BuildContext context) {
   //   Navigator.of(context)
   //       .push(MaterialPageRoute(builder: (context) => AddCelebrityRoute()));
   // }
-  FloatingActionButton playButton(BuildContext context, GameState state) {
+  FloatingActionButton playButton(BuildContext context, GameState gameState) {
     return FloatingActionButton(
       onPressed: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PlayGameRoute(state: state)));
+                builder: (context) => PlayGameRoute(gameState: gameState)));
       },
       tooltip: "Play Game",
       child: Icon(Icons.play_arrow),
@@ -30,8 +44,8 @@ class GameDetailsRoute extends StatelessWidget {
   FloatingActionButton addButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => AddCelebrityRoute(_game)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AddCelebrityRoute(widget.game)));
       },
       tooltip: "Add celebrity",
       child: Icon(Icons.add),
@@ -58,12 +72,27 @@ class GameDetailsRoute extends StatelessWidget {
     );
   }
 
+  void incrementTime() {
+    setState(() {
+      gameState.time = gameState.time + 1;
+    });
+  }
+
+  void decrementTime() {
+    setState(() {
+      gameState.time = gameState.time - 1;
+      if (gameState.time <= 0) {
+        gameState.time = 1;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('games')
-            .where("name", isEqualTo: _game.get('name'))
+            .where("name", isEqualTo: widget.game.get('name'))
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -74,20 +103,17 @@ class GameDetailsRoute extends StatelessWidget {
           if (!document.exists) {
             return simpleScreen("Error");
           }
-          GameState state = GameState(time: 3, game: document.reference);
           Column column = Column(
             children: [
-              Ink(
-                  color: Colors.white,
-                  child: IconButton(
-                    icon: Icon(Icons.keyboard_arrow_up),
-                    iconSize: 64,
-                    onPressed: () => {},
-                  )),
+              IconButton(
+                icon: Icon(Icons.keyboard_arrow_up),
+                iconSize: 64,
+                onPressed: incrementTime,
+              ),
               IconButton(
                   icon: Icon(Icons.keyboard_arrow_down),
                   iconSize: 64,
-                  onPressed: () => {}),
+                  onPressed: decrementTime),
             ],
           );
           return Scaffold(
@@ -98,10 +124,11 @@ class GameDetailsRoute extends StatelessWidget {
               GridBox.informationBox(
                   document.get('card_count').toString(), "Celebrities"),
               GridBox.informationBox(document.get("round").toString(), "Round"),
-              GridBox.informationBox(state.time.toString(), "Seconds per turn"),
+              GridBox.informationBox(
+                  gameState.time.toString(), "Seconds per turn"),
               GridBox.widgetBox(column, "Adjust time"),
             ]),
-            floatingActionButton: floatingActionButtons(context, state),
+            floatingActionButton: floatingActionButtons(context, gameState),
           );
         });
   }

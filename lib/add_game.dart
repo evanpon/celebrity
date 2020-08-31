@@ -11,7 +11,7 @@ class AddGameRoute extends StatelessWidget {
     }
     FirebaseFirestore.instance
         .collection('games')
-        .add({"name": name, "round": 1, "card_count": 0});
+        .add({"name": name, "round": 1, "card_count": 0, "time": 60});
   }
 
   @override

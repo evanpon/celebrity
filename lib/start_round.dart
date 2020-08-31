@@ -5,12 +5,14 @@ import 'game_state.dart';
 import 'gridbox.dart';
 
 class StartRoundRoute extends StatelessWidget {
-  final GameState state;
-  StartRoundRoute({Key key, this.state}) : super(key: key);
+  final GameState gameState;
+  StartRoundRoute({Key key, this.gameState}) : super(key: key);
 
   void play(BuildContext context) {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => PlayGameRoute(state: state)));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PlayGameRoute(gameState: gameState)));
   }
 
   @override
@@ -22,11 +24,13 @@ class StartRoundRoute extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2,
         children: [
-          GridBox.informationBox(state.time.toString(), "remaining seconds"),
-          GridBox.informationBox(state.round.toString(), "next round"),
-          GridBox.informationBox(state.correct.toString(), "correct (so far)"),
           GridBox.informationBox(
-              state.incorrect.toString(), "incorrect (so far)"),
+              gameState.time.toString(), "remaining seconds"),
+          GridBox.informationBox(gameState.round.toString(), "next round"),
+          GridBox.informationBox(
+              gameState.correct.toString(), "correct (so far)"),
+          GridBox.informationBox(
+              gameState.incorrect.toString(), "incorrect (so far)"),
         ],
       ),
       floatingActionButton: FloatingActionButton(

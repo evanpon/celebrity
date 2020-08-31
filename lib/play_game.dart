@@ -7,8 +7,8 @@ import 'celebrity.dart';
 import 'game_state.dart';
 
 class PlayGameRoute extends StatefulWidget {
-  final GameState state;
-  const PlayGameRoute({Key key, this.state}) : super(key: key);
+  final GameState gameState;
+  const PlayGameRoute({Key key, this.gameState}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +28,7 @@ class PlayGameState extends State<PlayGameRoute> {
 
   @override
   void initState() {
-    GameState state = widget.state;
+    GameState state = widget.gameState;
     _timeLeft = state.time;
     _correct = state.correct;
     _incorrect = state.incorrect;
@@ -37,8 +37,8 @@ class PlayGameState extends State<PlayGameRoute> {
   }
 
   Future<void> loadCelebrities() async {
-    game = await widget.state.game.get();
-    final data = await widget.state.game
+    game = await widget.gameState.game.get();
+    final data = await widget.gameState.game
         .collection('cards')
         .where("round", isLessThan: game.get("round"))
         .get();
@@ -130,14 +130,16 @@ class PlayGameState extends State<PlayGameRoute> {
     int nextRound = game.get("round") + 1;
     updateCorrectCelebs();
     game.reference.update({"round": nextRound});
-    GameState state = GameState(
+    GameState nextGameState = GameState(
         round: nextRound,
         time: _timeLeft,
         game: game.reference,
         correct: _correct,
         incorrect: _incorrect);
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => StartRoundRoute(state: state)));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => StartRoundRoute(gameState: nextGameState)));
   }
 
   Widget build(BuildContext context) {
