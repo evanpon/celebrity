@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'play_game.dart';
 import 'game_state.dart';
+import 'gridbox.dart';
 
 class StartRoundRoute extends StatelessWidget {
   final GameState state;
@@ -14,20 +15,24 @@ class StartRoundRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> columnChildren = [
-      Text("You have ${state.time} seconds left for the next round."),
-      Text(
-          "Your score for this round: ${state.correct} correct, ${state.incorrect} incorrect."),
-      Text("Your score will now reset."),
-      RaisedButton(
-          onPressed: () => {play(context)}, child: Text("Start next round")),
-    ];
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Beginning of Round ${state.round}"),
+        title: Text("Round ended"),
       ),
-      body: Column(children: columnChildren),
+      body: GridView.count(
+        crossAxisCount: 2,
+        children: [
+          GridBox.informationBox(state.time.toString(), "remaining seconds"),
+          GridBox.informationBox(state.round.toString(), "next round"),
+          GridBox.informationBox(state.correct.toString(), "correct (so far)"),
+          GridBox.informationBox(
+              state.incorrect.toString(), "incorrect (so far)"),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => {play(context)},
+          tooltip: "Keep playing",
+          child: Icon(Icons.play_arrow)),
     );
   }
 }
