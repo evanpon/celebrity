@@ -5,6 +5,16 @@ class TurnOverRoute extends StatelessWidget {
   final int incorrect;
   TurnOverRoute({Key key, this.correct, this.incorrect}) : super(key: key);
 
+  Container gridBox(String primary, String secondary) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(children: [
+        Expanded(child: FittedBox(fit: BoxFit.contain, child: Text(primary))),
+        Text(secondary),
+      ]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,25 +24,8 @@ class TurnOverRoute extends StatelessWidget {
         body: GridView.count(
           crossAxisCount: 2,
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(children: [
-                Expanded(
-                    child: FittedBox(
-                        fit: BoxFit.contain, child: Text(correct.toString()))),
-                Text("Correct"),
-              ]),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(children: [
-                Expanded(
-                    child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(incorrect.toString()))),
-                Text("Incorrect"),
-              ]),
-            ),
+            gridBox(correct.toString(), "Correct"),
+            gridBox(incorrect.toString(), "Incorrect")
           ],
         ));
   }

@@ -57,6 +57,16 @@ class GameDetailsRoute extends StatelessWidget {
     );
   }
 
+  Container gridBox(String primary, String secondary) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(children: [
+        Expanded(child: FittedBox(fit: BoxFit.contain, child: Text(primary))),
+        Text(secondary),
+      ]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
@@ -73,33 +83,16 @@ class GameDetailsRoute extends StatelessWidget {
           if (!document.exists) {
             return simpleScreen("Error");
           }
-          Text cardCount = Text(document.get('card_count').toString());
-          // cardCount = Text("50");
-          var subtitle = Text("Celebrities");
           GameState state = GameState(time: 3, game: document.reference);
 
           return Scaffold(
             appBar: AppBar(
               title: Text(document.get('name')),
             ),
-            body: Center(
-                child: Column(children: [
-              Expanded(
-                  child: FractionallySizedBox(
-                      widthFactor: 0.8,
-                      child: FittedBox(fit: BoxFit.contain, child: cardCount)),
-                  flex: 2),
-              Expanded(
-                  child: FractionallySizedBox(
-                      widthFactor: 0.8,
-                      child: FittedBox(fit: BoxFit.fitWidth, child: subtitle)),
-                  flex: 1),
-              Expanded(
-                  child: SizedBox(
-                    height: 10,
-                  ),
-                  flex: 1),
-            ])),
+            body: GridView.count(crossAxisCount: 2, children: [
+              gridBox(document.get('card_count').toString(), "Celebrities"),
+              gridBox(document.get("round").toString(), "Round"),
+            ]),
             floatingActionButton: floatingActionButtons(context, state),
           );
         });
