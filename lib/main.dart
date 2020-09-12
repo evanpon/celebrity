@@ -19,7 +19,10 @@ class MyApp extends StatelessWidget {
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text("Something went wrong");
+            return Text(
+              "Something went wrong: ",
+              textDirection: TextDirection.ltr,
+            );
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(

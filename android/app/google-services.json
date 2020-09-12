@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "17702600665",
+    "firebase_url": "https://celebrity-1a958.firebaseio.com",
+    "project_id": "celebrity-1a958",
+    "storage_bucket": "celebrity-1a958.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17702600665:android:4bbf2e9a0dc3ab8584a3c8",
+        "android_client_info": {
+          "package_name": "com.evanpon.celebrity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17702600665-knf0cb4uesqntq5g8389cfeq4eutk3kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjnq2oh6ZneumP06tXqaYeU7s2Fnv_V5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17702600665-knf0cb4uesqntq5g8389cfeq4eutk3kp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "17702600665-t1movneb18satng2uhp4qjuu3aso1ge3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.evanpon.celebrity"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
